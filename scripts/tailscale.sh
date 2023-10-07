@@ -18,8 +18,8 @@ STATE_FILE="/jffs/tailscaled.state" # where to store state file, preferably pers
 INTERFACE="tailscale0" # interface to use, if you change TAILSCALED_ARGUMENTS make sure correct interface is being used
 TAILSCALED_ARGUMENTS="-no-logs-no-support -tun $INTERFACE" # 'tailscaled' arguments
 TAILSCALE_ARGUMENTS="--accept-dns=false --advertise-exit-node" # 'tailscale up' arguments, refer to https://tailscale.com/kb/1080/cli/#command-reference
-TAILSCALED_PATH="" # path to tailscaled binary, fill TAILSCALE_DOWNLOAD_URL to automatically download
-TAILSCALE_PATH="" # path to tailscale binary, fill TAILSCALE_DOWNLOAD_URL to automatically download
+TAILSCALED_PATH="" # path to tailscaled binary, fill TAILSCALE_DOWNLOAD_URL to automatically download 下载到指定位置，这里配置上
+TAILSCALE_PATH="" # path to tailscale binary, fill TAILSCALE_DOWNLOAD_URL to automatically download 下载到指定位置，这里配置上
 TAILSCALE_DOWNLOAD_URL="" # Tailscale tgz download URL, "https://pkgs.tailscale.com/stable/tailscale_latest_arm.tgz" should work
 
 # This means that this is a Merlin firmware
@@ -116,12 +116,12 @@ case "$1" in
             ! lsmod | grep -q tun && modprobe tun && sleep 1
 
             #shellcheck disable=SC2086
-            /tmp/tailscaled --state="$STATE_FILE" $TAILSCALED_ARGUMENTS >/dev/null 2>&1 &
+            $TAILSCALED_PATH --state="$STATE_FILE" $TAILSCALED_ARGUMENTS >/dev/null 2>&1 &
             sleep 5
         fi
 
         #shellcheck disable=SC2086
-        /tmp/tailscale up $TAILSCALE_ARGUMENTS
+        $TAILSCALE_PATH up $TAILSCALE_ARGUMENTS
 
         sh "$SCRIPT_PATH" firewall
     ;;
